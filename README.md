@@ -1,14 +1,11 @@
-# [ETH Vanity](https://awesome-aitools.vercel.app/)
+# [ETH Vanity](https://eth-vanity.vercel.app/)
 
-https://awesome-aitools.vercel.app/ 
+https://eth-vanity.vercel.app/ 
 
-[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
-
-A  curated collection of AI services and AI applications which can help you work and study.
+在线生成ETH靓号.
 
 Built with [Next.js](https://beta.nextjs.org/docs) using [TypeScript](https://www.typescriptlang.org/) and styled with [Tailwind CSS](https://tailwindcss.com/).
 
-![aitools](./public/screen.png)
 
 ## Contributing
 Your contributions are always welcome! Please take a look at the contribution guidelines first.
