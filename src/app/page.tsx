@@ -6,6 +6,34 @@ import { useState } from 'react';
 export default function Main() {
   const [isMatchCase, setIsMatchCase] = useState(true);
   const [value, setValue] = useState('');
+  const [addr, setAddr] = useState('');
+  const [privateKey, setPrivateKey] = useState('');
+  const [status, setStatus] = useState('');
+  const root = process.env.ROOT_URL
+
+  const generate = async () => {
+    const res = await fetch(`${root}/api/generate?value=${value}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+
+        },
+      })
+    const { data } = await res.json()
+    if (res.ok) {
+      setStatus(data?.status)
+    }
+    if (data?.status === 'suc') {
+      setAddr(data?.address)
+      setPrivateKey(data?.key)
+    }
+  }
+
+  const pause = () => {
+    setStatus('')
+  }
+
 
   return (
     <div className="flex flex-col justify-center px-8 pb-32 md:pb-36 lg:px-10 ">
@@ -46,8 +74,10 @@ export default function Main() {
 
       <div>
         <div className='flex gap-2 p-2'>
-          <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">生成</button>
-          <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">暂停</button>
+          <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+            onClick={generate}>生成</button>
+          <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+            onClick={pause}>暂停</button>
         </div>
       </div>
       <div className='mt-4 p-2'>
@@ -55,7 +85,15 @@ export default function Main() {
         </span>
       </div>
       <div className='mt-2 p-2'>
-        状态 <span className='ml-12'>waiting
+        状态 <span className='ml-12'>${status}
+        </span>
+      </div>
+      <div className='mt-4 p-2'>
+        Address  <span className='ml-12'>${addr}
+        </span>
+      </div>
+      <div className='mt-2 p-2'>
+        PrivateKey <span className='ml-12'>${privateKey}
         </span>
       </div>
       <hr className="my-12 h-px border-0 bg-black dark:bg-[#292C2D]" />
