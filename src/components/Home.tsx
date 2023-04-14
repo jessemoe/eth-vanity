@@ -1,5 +1,4 @@
 import Contact from '@/components/Contact';
-import WebSocket from 'ws';
 import { useState } from 'react';
 
 export default function Home() {
@@ -28,18 +27,18 @@ export default function Home() {
     //   setPrivateKey(data?.key)
     // }
     const socket = new WebSocket('ws://eth-vanity.vercel.com:8080');
-    socket.on('open', () => {
+    socket.onopen = function(event) {
       console.log('WebSocket opened');
       socket.send('generate');
-    });
-
-    socket.on('message', (data) => {
-      console.log('Received message:', data.toString());
-    });
-
-    socket.on('close', () => {
+  };
+  
+  socket.onmessage = function(event) {
+      console.log('Received message:', event.data);
+  };
+  
+  socket.onclose = function(event) {
       console.log('WebSocket closed');
-    });
+  };
   }
 
   const pause = () => {
