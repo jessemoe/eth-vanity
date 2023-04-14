@@ -3,15 +3,49 @@ package api
 import (
 	"eth-vanity/handler"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 )
 
 var (
 	app *gin.Engine
 )
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+}
+
+func websocketHandler(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer conn.Close()
+
+	for {
+		messageType, p, err := conn.ReadMessage()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		log.Printf("Received message: %s\n", p)
+
+		if err := conn.WriteMessage(messageType, p); err != nil {
+			log.Println(err)
+			return
+		}
+	}
+}
 
 func registerRouter(r *gin.RouterGroup) {
 	r.GET("/api/ping", handler.Ping)
@@ -36,6 +70,8 @@ func init() {
 
 	// register route
 	registerRouter(r)
+	http.HandleFunc("/ws", websocketHandler)
+	http.ListenAndServe(":2023", nil)
 }
 
 // entrypoint
