@@ -4,7 +4,6 @@ import (
 	"crypto/ecdsa"
 	"fmt"
 	"log"
-	"net/http"
 	"strings"
 	"sync"
 
@@ -18,22 +17,9 @@ var (
 	wg    sync.WaitGroup
 )
 
-func Ping(c *gin.Context) {
-	c.String(http.StatusOK, "pong")
-}
-
-func ErrRouter(c *gin.Context) {
-	c.String(http.StatusBadRequest, "url err")
-}
-
 func Generate(c *gin.Context) {
 	value := c.Query("value")
 	createWallet(len(value), []string{value})
-}
-
-func Cors(c *gin.Context) {
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.Next()
 }
 
 func createWallet(strLen int, strSubstr []string) {
