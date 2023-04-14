@@ -1,5 +1,5 @@
 import Contact from '@/components/Contact';
-import { getRootUrl } from '@/lib/utils';
+import WebSocket from 'ws';
 import { useState } from 'react';
 
 export default function Home() {
@@ -7,26 +7,39 @@ export default function Home() {
   const [value, setValue] = useState('');
   const [addr, setAddr] = useState('');
   const [privateKey, setPrivateKey] = useState('');
-  const [status, setStatus] = useState('');  
+  const [status, setStatus] = useState('');
 
   const generate = async () => {
-    const root = getRootUrl()
-    const res = await fetch(`${root}/api/generate?value=${value}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
+    // const root = getRootUrl()
+    // const res = await fetch(`${root}/api/generate?value=${value}`,
+    //   {
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-Type': 'application/json',
 
-        },
-      })
-    const { data } = await res.json()
-    if (res.ok) {
-      setStatus(data?.status)
-    }
-    if (data?.status === 'suc') {
-      setAddr(data?.address)
-      setPrivateKey(data?.key)
-    }
+    //     },
+    //   })
+    // const { data } = await res.json()
+    // if (res.ok) {
+    //   setStatus(data?.status)
+    // }
+    // if (data?.status === 'suc') {
+    //   setAddr(data?.address)
+    //   setPrivateKey(data?.key)
+    // }
+    const socket = new WebSocket('ws://eth-vanity.vercel.com:8080');
+    socket.on('open', () => {
+      console.log('WebSocket opened');
+      socket.send('generate');
+    });
+
+    socket.on('message', (data) => {
+      console.log('Received message:', data.toString());
+    });
+
+    socket.on('close', () => {
+      console.log('WebSocket closed');
+    });
   }
 
   const pause = () => {

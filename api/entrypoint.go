@@ -38,9 +38,10 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		log.Printf("Received message: %s\n", p)
-
-		if err := conn.WriteMessage(messageType, p); err != nil {
+		log.Printf("Received message: %s type: %d\n", p, messageType)
+		message := []byte("waitting")
+		err = conn.WriteMessage(websocket.TextMessage, message)
+		if err != nil {
 			log.Println(err)
 			return
 		}
