@@ -1,6 +1,6 @@
-# [ETH Vanity](https://eth-vanity.vercel.app/)
+# [ETH Vanity](https://ethvanity.vercel.app/)
 
-https://eth-vanity.vercel.app/ 
+https://ethvanity.vercel.app/ 
 
 在线生成ETH靓号.
 
