@@ -10,7 +10,7 @@ export default function Home() {
   const [status, setStatus] = useState('');  
 
   const generate = async () => {
-    const root = getRootUrl
+    const root = getRootUrl()
     const res = await fetch(`${root}/api/generate?value=${value}`,
       {
         method: 'GET',
