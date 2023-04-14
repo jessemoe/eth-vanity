@@ -8,6 +8,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export const getRootUrl = memoize(
   () => {
-    return process.env.ROOT_URL
+    return "https://ethvanity.vercel.app"
   }
 ) 
