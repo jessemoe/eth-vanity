@@ -1,11 +1,9 @@
-"use client"; // this is a client component
-
 import Contact from '@/components/Contact';
 import { useState } from 'react';
 
 const root = process.env.ROOT_URL
 
-export default function Main() {
+export default function Home() {
   const [isMatchCase, setIsMatchCase] = useState(true);
   const [value, setValue] = useState('');
   const [addr, setAddr] = useState('');
@@ -86,15 +84,15 @@ export default function Main() {
         </span>
       </div>
       <div className='mt-2 p-2'>
-        状态 <span className='ml-12'>${status}
+        状态 <span className='ml-12'>{status}
         </span>
       </div>
       <div className='mt-4 p-2'>
-        Address  <span className='ml-12'>${addr}
+        Address  <span className='ml-12'>{addr}
         </span>
       </div>
       <div className='mt-2 p-2'>
-        PrivateKey <span className='ml-12'>${privateKey}
+        PrivateKey <span className='ml-12'>{privateKey}
         </span>
       </div>
       <hr className="my-12 h-px border-0 bg-black dark:bg-[#292C2D]" />
