@@ -3,13 +3,14 @@
 import Contact from '@/components/Contact';
 import { useState } from 'react';
 
+const root = process.env.ROOT_URL
+
 export default function Main() {
   const [isMatchCase, setIsMatchCase] = useState(true);
   const [value, setValue] = useState('');
   const [addr, setAddr] = useState('');
   const [privateKey, setPrivateKey] = useState('');
-  const [status, setStatus] = useState('');
-  const root = process.env.ROOT_URL
+  const [status, setStatus] = useState('');  
 
   const generate = async () => {
     const res = await fetch(`${root}/api/generate?value=${value}`,
