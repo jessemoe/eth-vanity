@@ -1,10 +1,13 @@
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { memoize } from "lodash";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getRootUrl() {
-  return process.env.ROOT_URL
-}
+export const getRootUrl = memoize(
+  () => {
+    return process.env.ROOT_URL
+  }
+) 
