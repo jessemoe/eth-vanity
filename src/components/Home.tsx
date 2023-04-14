@@ -1,7 +1,6 @@
 import Contact from '@/components/Contact';
+import { getRootUrl } from '@/lib/utils';
 import { useState } from 'react';
-
-const root = process.env.ROOT_URL
 
 export default function Home() {
   const [isMatchCase, setIsMatchCase] = useState(true);
@@ -11,6 +10,7 @@ export default function Home() {
   const [status, setStatus] = useState('');  
 
   const generate = async () => {
+    const root = getRootUrl
     const res = await fetch(`${root}/api/generate?value=${value}`,
       {
         method: 'GET',
