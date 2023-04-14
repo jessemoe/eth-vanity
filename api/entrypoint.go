@@ -57,6 +57,7 @@ func registerRouter(r *gin.RouterGroup) {
 func init() {
 	app = gin.New()
 
+	app.Use(handler.Cors)
 	// Handling routing errors
 	app.NoRoute(func(c *gin.Context) {
 		sb := &strings.Builder{}

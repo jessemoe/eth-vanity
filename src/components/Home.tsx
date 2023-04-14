@@ -19,13 +19,19 @@ export default function Home() {
 
         },
       })
-    const { data } = await res.json()
+    const data = await res.json()
+    console.log(data)
+    console.log(data?.status)
+    console.log(res.status)
     if (res.ok) {
       setStatus(data?.status)
     }
     if (data?.status === 'suc') {
       setAddr(data?.address)
       setPrivateKey(data?.key)
+    } else {
+      setAddr('')
+      setPrivateKey('')
     }
     // const socket = new WebSocket('ws://eth-vanity.vercel.com:2023');
     // socket.onopen = function(event) {
