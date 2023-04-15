@@ -1,6 +1,7 @@
 import Contact from '@/components/Contact';
 import { getRootUrl } from '@/lib/utils';
 import { useState } from 'react';
+import RadioButton from './RadioButton';
 
 export default function Home() {
   const [isMatchCase, setIsMatchCase] = useState(true);
@@ -8,8 +9,10 @@ export default function Home() {
   const [addr, setAddr] = useState('');
   const [privateKey, setPrivateKey] = useState('');
   const [status, setStatus] = useState('');
+  const [mode, setMode] = useState('');
 
   const generate = async () => {
+    console.log(mode)
     const root = getRootUrl()
     const res = await fetch(`${root}/api/generate?value=${value}`,
       {
@@ -52,6 +55,18 @@ export default function Home() {
     setStatus('')
   }
 
+  const options = [
+    {
+      label: "Serverless Function生成(快速)",
+      value: "server"
+    },
+    {
+      label: "本地生成",
+      value: "local"
+    },
+
+  ]
+
 
   return (
     <div className="flex flex-col justify-center px-8 pb-32 md:pb-36 lg:px-10 ">
@@ -89,14 +104,16 @@ export default function Home() {
           onChange={() => setIsMatchCase(!isMatchCase)}
         />
       </div>
+      <div className=' mb-4 flex gap-2  text-gray-600'>
+        生成方式
+      </div>
+      <RadioButton options={options} selectedValue={options[0].value} onChange={(value) => setMode(value)}></RadioButton>
 
-      <div>
-        <div className='flex gap-2 p-2'>
-          <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-            onClick={generate}>生成</button>
-          <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-            onClick={pause}>暂停</button>
-        </div>
+      <div className='flex items-center gap-12 p-2'>
+        <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+          onClick={generate}>生成</button>
+        <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+          onClick={pause}>暂停</button>
       </div>
       <div className='mt-4 p-2'>
         难度  <span className='ml-12'>{1 << value.length * 4}
