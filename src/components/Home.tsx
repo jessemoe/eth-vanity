@@ -1,6 +1,7 @@
 import Contact from '@/components/Contact';
 import { getRootUrl } from '@/lib/utils';
 import { useState } from 'react';
+import ProgressBar from './ProgressBar';
 import RadioButton from './RadioButton';
 
 export default function Home() {
@@ -10,8 +11,25 @@ export default function Home() {
   const [privateKey, setPrivateKey] = useState('');
   const [status, setStatus] = useState('');
   const [mode, setMode] = useState('');
+  const [progress, setProgress] = useState(0)
+  let interval: NodeJS.Timer
+
+  const handleStart = () => {
+    clearInterval(interval)
+    const inter = (1 << value.length * 4) / 1000
+    let currentProgress = 0;
+    interval = setInterval(() => {
+      if (currentProgress < 100) {
+        currentProgress += 1;
+        setProgress(currentProgress);
+      } else {
+        clearInterval(interval);
+      }
+    }, inter);
+  };
 
   const generate = async () => {
+    handleStart()
     console.log(mode)
     const root = getRootUrl()
     const res = await fetch(`${root}/api/generate?value=${value}`,
@@ -131,6 +149,12 @@ export default function Home() {
         PrivateKey <span className='ml-12'>{privateKey}
         </span>
       </div>
+      <div className='mt-0  p-2'>
+        <div className='my-2'>Progress</div> 
+        <ProgressBar progress={progress} onStart={handleStart} />
+
+      </div>
+
       <hr className="my-12 h-px border-0 bg-black dark:bg-[#292C2D]" />
       <Contact />
     </div>
