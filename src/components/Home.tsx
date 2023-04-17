@@ -1,4 +1,5 @@
 import Contact from '@/components/Contact';
+import { generate } from '@/lib/generate';
 import { getRootUrl } from '@/lib/utils';
 import { useState } from 'react';
 import ProgressBar from './ProgressBar';
@@ -28,9 +29,17 @@ export default function Home() {
     }, inter);
   };
 
-  const generate = async () => {
-    handleStart()
-    console.log(mode)
+  const startLocal = async () => {
+    try {
+      const {addr, key} = await generate([value])
+      setAddr(addr);
+      setPrivateKey(key);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const startServer = async () => {
     const root = getRootUrl()
     const res = await fetch(`${root}/api/generate?value=${value}`,
       {
@@ -67,6 +76,16 @@ export default function Home() {
     // socket.onclose = function(event) {
     //     console.log('WebSocket closed');
     // };
+  }
+  const startGenerate = async () => {
+    handleStart()
+    if (mode === 'local') {
+      startLocal()
+    } else {
+      startServer()
+    }
+    console.log(mode)
+
   }
 
   const pause = () => {
@@ -129,7 +148,7 @@ export default function Home() {
 
       <div className='flex items-center gap-12 p-2'>
         <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-          onClick={generate}>生成</button>
+          onClick={startGenerate}>生成</button>
         <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
           onClick={pause}>暂停</button>
       </div>
@@ -150,7 +169,7 @@ export default function Home() {
         </span>
       </div>
       <div className='mt-0  p-2'>
-        <div className='my-2'>Progress</div> 
+        <div className='my-2'>Progress</div>
         <ProgressBar progress={progress} onStart={handleStart} />
 
       </div>
